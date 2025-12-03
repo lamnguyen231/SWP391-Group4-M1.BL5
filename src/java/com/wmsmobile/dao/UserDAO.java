@@ -23,8 +23,11 @@ public class UserDAO extends dbConfig{
     public List<User> getListUserForAdmin() {
         List<User> listUser = new ArrayList<>();
 
+        // Mock data
+        listUser.add(new User(1, "Nguyen Lam", "mystyme2312@gmail.com", "Employee", "Inactive"));
+        listUser.add(new User(2, "Pham Hiep", "def@testmail.com", "Keeper", "Active"));
 
-            /*Add sql command then try catch for data */
+        /*Add sql command then try catch for data */
 
         return listUser;
     }

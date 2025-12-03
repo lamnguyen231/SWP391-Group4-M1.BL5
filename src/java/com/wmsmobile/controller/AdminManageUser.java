@@ -65,8 +65,7 @@ public class AdminManageUser extends HttpServlet {
                 List<User> listUser = ub.getListUserForAdmin();
                 request.setAttribute("listUser", listUser);
                 ServletContext context = request.getServletContext();
-                context.getRequestDispatcher("/view/admin/userList.jsp").forward(request, response);
-
+                context.getRequestDispatcher("/views/admin/userList.jsp").forward(request, response);
     }
 
     /**
