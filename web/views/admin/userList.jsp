@@ -1,70 +1,91 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.*" %>
+<%@ page import="java.util.*, com.wmsmobile.model.User" %>
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>User List</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>User Management</title>
 </head>
 <body>
 
-    <h2>System User List</h2>
+<h2 class="title">System User List</h2>
 
-    <div class="add-user-container">
-        <a href="userForm.jsp" class="btn btn-add">+ Add New User</a>
+<div class="top-bar">
+    <a href="userForm.jsp" class="btn-add">Add new user</a>
+
+    <div class="filters">
+        <select class="filter-select">
+            <option>All Role</option>
+            <option>Employee</option>
+            <option>Keeper</option>
+        </select>
+
+        <select class="filter-select">
+            <option>All Status</option>
+            <option>Active</option>
+            <option>Inactive</option>
+        </select>
+
+        <input type="text" class="search-box" placeholder="Search user by mail">
+        <button class="search-btn">Search</button>
     </div>
+</div>
 
-    <%
-    
-        List<Map<String, String>> userList = (List<Map<String, String>>) request.getAttribute("userList");
-        
-        if (userList == null) {
-            userList = new ArrayList<>();
-            Map<String, String> u1 = new HashMap<>(); u1.put("id", "101"); u1.put("name", "Alice Johnson"); u1.put("email", "alice@test.com");
-            Map<String, String> u2 = new HashMap<>(); u2.put("id", "102"); u2.put("name", "Bob Smith"); u2.put("email", "bob@test.com");
-            userList.add(u1); userList.add(u2);
-        }
-    %>
+<%
+    List<User> listUser = request.getAttribute("listUser");
 
-    <table class="user-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Full Name</th>
-                <th>Email Address</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% 
-                if (userList != null && !userList.isEmpty()) {
-                    for (Map<String, String> user : userList) {
-            %>
-            <tr>
-                <td><%= user.get("id") %></td>
-                <td><%= user.get("name") %></td>
-                <td><%= user.get("email") %></td>
-                <td>
-                    <a href="editUser?id=<%= user.get("id") %>" class="btn btn-edit">Edit</a>
-                    <a href="deleteUser?id=<%= user.get("id") %>" 
-                       class="btn btn-delete" 
-                       onclick="return confirm('Delete user <%= user.get("name") %>?');">
-                       Delete
-                    </a>
-                </td>
-            </tr>
-            <% 
-                    }
-                } else {
-            %>
-            <tr>
-                <td colspan="4" style="text-align:center;">No users found.</td>
-            </tr>
+%>
+
+<table class="user-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Full Name</th>
+            <th>Role</th>
+            <th>Mail</th>
+            <th>Status</th>
+            <th style="width: 180px;">Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    <% for (User user : listUser) { %>
+    <tr>
+        <td><%= user.getId() %></td>
+        <td><%= user.getName() %></td>
+        <td><%= user.getEmail() %></td>
+        <td><%= user.getRole() %></td>
+
+        <td>
+            <% if ("Active".equals(user.getStatus())) { %>
+                <span class="status-active">Active</span>
+            <% } else { %>
+                <span class="status-inactive">Inactive</span>
             <% } %>
-        </tbody>
-    </table>
+        </td>
+
+        <td>
+            <a href="editUser?id=<%= user.getId() %>" class="action-link">Edit</a>
+
+            <% if ("Active".equals(user.getStatus())) { %>
+                <a href="toggleStatus?id=<%= user.getId() %>" class="action-link red">Deactivate</a>
+            <% } else { %>
+                <a href="toggleStatus?id=<%= user.getId() %>" class="action-link green">Activate</a>
+            <% } %>
+        </td>
+    </tr>
+    <% } %>
+    </tbody>
+</table>
+
+<div class="pagination">
+    <button>1</button>
+    <button>2</button>
+    <span>...</span>
+    <button>6</button>
+    <button>7</button>
+</div>
 
 </body>
 </html>
