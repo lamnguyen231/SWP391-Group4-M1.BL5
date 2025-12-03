@@ -11,5 +11,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
     </head>
     <body>
         <div>Home page</div>
+        <a href="login.jsp">Login</a>
+        <a href="register.jsp">Register</a>
     </body>
 </html>
