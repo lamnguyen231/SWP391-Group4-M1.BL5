@@ -21,6 +21,34 @@ public class UserDAO extends dbConfig {
         super();
     }
 
+    public User getUserByEmailAndPassword(String email, String password) {
+        User user = null;
+        String sql = "SELECT user_id, name, email, status, role_id FROM users WHERE email = ? AND password = ?";
+        
+        try {
+            Connection conn = getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.setString(2, password);
+            
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                user = new User(
+                    rs.getInt("user_id"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getInt("status"),
+                    rs.getInt("role_id")
+                );
+            }
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
     public List<User> getListUserForAdmin(String role, String status, String search) {
         List<User> listUser = new ArrayList<>();
         List<Object> params = new ArrayList<>();
@@ -80,13 +108,14 @@ public class UserDAO extends dbConfig {
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                listUser.add(new User(
+                User user = new User(
                         rs.getInt("user_id"),
                         rs.getString("name"),
                         rs.getString("email"),
-                        rs.getString("role_name"),
-                        rs.getBoolean("status")
-                ));
+                        rs.getInt("status"),
+                        rs.getInt("role_id")
+                );
+                listUser.add(user);
             }
             rs.close();
             ps.close();
