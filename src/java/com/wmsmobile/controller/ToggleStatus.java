@@ -4,24 +4,23 @@
  */
 package com.wmsmobile.controller;
 
+import jakarta.servlet.annotation.WebServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
+
+import com.wmsmobile.dao.UserDAO;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-
-import com.wmsmobile.dao.UserDAO;
-import com.wmsmobile.model.User;
-import jakarta.servlet.annotation.WebServlet;
 
 /**
  *
  * @author PC
  */
-@WebServlet("/admin/users")
-public class AdminManageUser extends HttpServlet {
+@WebServlet(name = "ToggleStatus", urlPatterns = {"/admin/toggleStatus"})
+public class ToggleStatus extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +39,10 @@ public class AdminManageUser extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UserListServlet</title>");
+            out.println("<title>Servlet ToggleStatus</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UserListServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ToggleStatus at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,20 +60,35 @@ public class AdminManageUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String role = request.getParameter("role");
-        String status = request.getParameter("status");
-        String search = request.getParameter("search");
+        try {
+            String idStr = request.getParameter("id");
 
-        UserDAO ud = new UserDAO();
+            if (idStr == null || idStr.isEmpty()) {
+                response.sendRedirect("users");
+                return;
+            }
 
-        List<User> list = ud.getListUserForAdmin(role, status, search);
+            int id = Integer.parseInt(idStr);
 
-        request.setAttribute("listUser", list);
-        request.setAttribute("currentRole", role);
-        request.setAttribute("currentStatus", status);
-        request.setAttribute("currentSearch", search);
+            /* Idea for denying admin the ability to deactivate themselves 
+            So they dont have to hack the db if they do ?
+            HttpSession session = request.getSession();
+            (dont have a idea what this should be) currentAdminId =  session.getAttribute("adminId");
+            adminId prob will come from a login servlet or a boolean checker that then translate it here.
 
-        request.getRequestDispatcher("/views/admin/userList.jsp").forward(request, response);
+            if (currentAdminId != null (just to make sure) && currentAdminId == id) {
+                request.setAttribute("Error Message", "You cannot deactivate your own account");
+                request.getRequestDispatcher("users").forward(request, response);
+                return;
+            } */
+
+            UserDAO ud = new UserDAO();
+            ud.toggleStatus(id);
+
+            response.sendRedirect("users");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -88,7 +102,7 @@ public class AdminManageUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+        
     }
 
     /**

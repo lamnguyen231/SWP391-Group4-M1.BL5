@@ -13,26 +13,28 @@
         <h2 class="title">System User List</h2>
 
         <div class="top-bar">
-            <a href="userForm.jsp" class="btn-add">Add new user</a>
+            <a href="/views/admin/addUser.jsp" class="btn-add">Add new user</a>
 
             <form action="users" method="GET">
                 <div class="filters">
 
-                    <select name="role" class="filter-select">
+                    <a href="users" class="reset-btn">Reset filter</a>
+
+                    <select name="role" class="filter-select" onchange="this.form.submit()">
                         <option value="All" ${currentRole == 'All' ? 'selected' : ''}>All Role</option>
                         <option value="Employee" ${currentRole == 'Employee' ? 'selected' : ''}>Employee</option>
                         <option value="Keeper" ${currentRole == 'Keeper' ? 'selected' : ''}>Keeper</option>
                         <option value="Admin" ${currentRole == 'Admin' ? 'selected' : ''}>Admin</option>
                     </select>
 
-                    <select name="status" class="filter-select">
+                    <select name="status" class="filter-select" onchange="this.form.submit()">
                         <option value="All" ${currentStatus == 'All' ? 'selected' : ''}>All Status</option>
                         <option value="Active" ${currentStatus == 'Active' ? 'selected' : ''}>Active</option>
                         <option value="Inactive" ${currentStatus == 'Inactive' ? 'selected' : ''}>Inactive</option>
                     </select>
 
                     <input type="text" name="search" class="search-box" 
-                           placeholder="Search user by mail" value="${currentSearch}">
+                           placeholder="Search user by mail" value="${currentSearch}" >
 
                     <button type="submit" class="search-btn">Search</button>
                 </div>
@@ -73,7 +75,7 @@
                     </td>
 
                     <td>
-                        <a href="editUser?id=<%= user.getId() %>" class="action-link">Edit</a>
+                        <a href="edit?id=<%= user.getId() %>" class="action-link">Edit</a>
 
                         <% if (!user.getRole().equals("Admin")) { %>
                         <% if (user.getStatus()) { %>
