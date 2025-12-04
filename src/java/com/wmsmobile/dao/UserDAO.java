@@ -27,8 +27,8 @@ public class UserDAO extends dbConfig {
 
         StringBuilder sql = new StringBuilder(
                 "SELECT u.user_id, u.name, u.email, u.status, r.role_name "
-                + "FROM users u "
-                + "INNER JOIN roles r ON u.role_id = r.role_id ");
+                        + "FROM users u "
+                        + "INNER JOIN roles r ON u.role_id = r.role_id ");
 
         boolean hasCondition = false;
 
@@ -85,8 +85,7 @@ public class UserDAO extends dbConfig {
                         rs.getString("name"),
                         rs.getString("email"),
                         rs.getString("role_name"),
-                        rs.getBoolean("status")
-                ));
+                        rs.getBoolean("status")));
             }
             rs.close();
             ps.close();
@@ -95,5 +94,26 @@ public class UserDAO extends dbConfig {
             e.printStackTrace();
         }
         return listUser;
+    }
+
+    public boolean toggleStatus(int userId) {
+        String sql = "UPDATE users set status = !status WHERE user_id = ?";
+
+        try {
+            Connection conn = new dbConfig().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setInt(1, userId);
+
+            int rowsAffected = ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
