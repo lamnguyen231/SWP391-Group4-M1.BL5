@@ -1,69 +1,99 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title>Update User</title>
+
+    <style>
+        body { font-family: Arial; }
+        table { margin: 0 auto; border-collapse: collapse; }
+        td { padding: 8px 10px; }
+        h1 { text-align: center; margin-bottom: 20px; }
+        input, select { width: 260px; padding: 6px; }
+        .btn-box { text-align: center; margin-top: 20px; }
+        button { padding: 7px 15px; margin: 0 5px; cursor: pointer; }
+    </style>
 </head>
+
 <body>
 
 <h1>Update User</h1>
 
-<form name="fCapNhat">
+<form name="updateForm">
 
-    <label>ID người dùng:</label>
-    <input type="text" value="10056" disabled>
+<table>
 
-    <label>Họ và tên:</label>
-    <input type="text" name="hoten" value="Trần Thị Lan">
+    <tr>
+        <td><label>User ID:</label></td>
+        <td><input type="text" name="userId" value="" disabled></td>
+    </tr>
 
-    <label>Tên đăng nhập:</label>
-    <input type="text" value="tranlan" disabled>
+    <tr>
+        <td><label>Full Name:</label></td>
+        <td><input type="text" name="fullName" value=""></td>
+    </tr>
 
-    <label>Mật khẩu mới (để trống nếu không đổi):</label>
-    <input type="password" name="pass">
+    <tr>
+        <td><label>Username:</label></td>
+        <td><input type="text" name="username" value="" disabled></td>
+    </tr>
 
-    <label>Nhập lại mật khẩu mới:</label>
-    <input type="password" name="pass2">
+    <tr>
+        <td><label>New Password:</label></td>
+        <td><input type="password" name="password"></td>
+    </tr>
 
-    <label>Email:</label>
-    <input type="email" name="email" value="lan.tran@company.com">
+    <tr>
+        <td><label>Confirm New Password:</label></td>
+        <td><input type="password" name="passwordConfirm"></td>
+    </tr>
 
-    <label>Số điện thoại:</label>
-    <input type="text" name="phone" value="0987654321">
+    <tr>
+        <td><label>Email:</label></td>
+        <td><input type="email" name="email" value=""></td>
+    </tr>
 
-    <label>Vai trò:</label>
-    <select name="role">
-        <option>Thủ kho</option>
-        <option selected>Nhân viên</option>
-    </select>
+    <tr>
+        <td><label>Phone Number:</label></td>
+        <td><input type="text" name="phone" value=""></td>
+    </tr>
 
-    <label>Trạng thái tài khoản:</label>
-    <select name="status">
-        <option selected>Hoạt động</option>
-        <option>Tạm khóa</option>
-    </select>
+    <tr>
+        <td><label>Role:</label></td>
+        <td>
+            <select name="role">
+                <option value="keeper">Keeper</option>
+                <option value="employee">Employee</option>
+            </select>
+        </td>
+    </tr>
 
-    <br><br>
-    <button type="button" onclick="luuCapNhat()">Cập Nhật</button>
-    <button type="button" onclick="alert('Đóng form')">Đóng</button>
+</table>
+
+<div class="btn-box">
+    <button type="button" onclick="submitUpdate()">Update</button>
+    <button type="button" onclick="history.back()">Close</button>
+</div>
 
 </form>
 
 <script>
-function luuCapNhat() {
-    var mk = document.fCapNhat.pass.value;
-    var mk2 = document.fCapNhat.pass2.value;
+function submitUpdate() {
+    var pwd = document.updateForm.password.value;
+    var pwd2 = document.updateForm.passwordConfirm.value;
 
-    if (mk !== "" && mk !== mk2) {
-        alert("Hai mật khẩu mới không giống nhau!");
-        return;
-    }
-    if (mk !== "" && mk.length < 6) {
-        alert("Mật khẩu mới phải ít nhất 6 ký tự!");
+    if (pwd !== "" && pwd !== pwd2) {
+        alert("The new passwords do not match!");
         return;
     }
 
-    alert("CẬP NHẬT THÀNH CÔNG!");
+    if (pwd !== "" && pwd.length < 6) {
+        alert("The new password must be at least 6 characters.");
+        return;
+    }
+
+    alert("User updated successfully!");
 }
 </script>
 
