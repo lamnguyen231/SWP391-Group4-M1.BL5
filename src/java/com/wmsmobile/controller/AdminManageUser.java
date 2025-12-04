@@ -15,12 +15,13 @@ import java.util.List;
 
 import com.wmsmobile.dao.UserDAO;
 import com.wmsmobile.model.User;
+import jakarta.servlet.annotation.WebServlet;
 
 /**
  *
  * @author PC
  */
-
+@WebServlet("/admin/users")
 public class AdminManageUser extends HttpServlet {
 
     /**
@@ -40,7 +41,7 @@ public class AdminManageUser extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UserListServlet</title>");            
+            out.println("<title>Servlet UserListServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet UserListServlet at " + request.getContextPath() + "</h1>");
@@ -61,11 +62,20 @@ public class AdminManageUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                UserDAO ub = new UserDAO();
-                List<User> listUser = ub.getListUserForAdmin();
-                request.setAttribute("listUser", listUser);
-                ServletContext context = request.getServletContext();
-                context.getRequestDispatcher("/views/admin/userList.jsp").forward(request, response);
+        String role = request.getParameter("role");
+        String status = request.getParameter("status");
+        String search = request.getParameter("search");
+
+        UserDAO dao = new UserDAO();
+
+        List<User> list = dao.getListUserForAdmin(role, status, search);
+
+        request.setAttribute("listUser", list);
+        request.setAttribute("currentRole", role);
+        request.setAttribute("currentStatus", status);
+        request.setAttribute("currentSearch", search);
+
+        request.getRequestDispatcher("/views/admin/userList.jsp").forward(request, response);
     }
 
     /**

@@ -9,13 +9,14 @@ package com.wmsmobile.model;
  * @author PC
  */
 public class User {
+
     private int id;
     private String name;
     private String email;
     private String role;
-    private String status;
+    private boolean status;
 
-    public User(int id, String name, String email, String role, String status) {
+    public User(int id, String name, String email, String role, boolean status) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -23,9 +24,23 @@ public class User {
         this.status = status;
     }
 
-    public int getId() { return id; }
-    public String getName() { return name; }
-    public String getEmail() { return email; }
-    public String getRole() { return role; }
-    public String getStatus() { return status; }
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public boolean getStatus() {
+        return status;
+    }
 }

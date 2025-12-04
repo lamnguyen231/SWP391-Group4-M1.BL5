@@ -3,89 +3,98 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>User Management</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <title>User Management</title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/userList.css">
+    </head>
+    <body>
 
-<h2 class="title">System User List</h2>
+        <h2 class="title">System User List</h2>
 
-<div class="top-bar">
-    <a href="userForm.jsp" class="btn-add">Add new user</a>
+        <div class="top-bar">
+            <a href="userForm.jsp" class="btn-add">Add new user</a>
 
-    <div class="filters">
-        <select class="filter-select">
-            <option>All Role</option>
-            <option>Employee</option>
-            <option>Keeper</option>
-        </select>
+            <form action="users" method="GET">
+                <div class="filters">
 
-        <select class="filter-select">
-            <option>All Status</option>
-            <option>Active</option>
-            <option>Inactive</option>
-        </select>
+                    <select name="role" class="filter-select">
+                        <option value="All" ${currentRole == 'All' ? 'selected' : ''}>All Role</option>
+                        <option value="Employee" ${currentRole == 'Employee' ? 'selected' : ''}>Employee</option>
+                        <option value="Keeper" ${currentRole == 'Keeper' ? 'selected' : ''}>Keeper</option>
+                        <option value="Admin" ${currentRole == 'Admin' ? 'selected' : ''}>Admin</option>
+                    </select>
 
-        <input type="text" class="search-box" placeholder="Search user by mail">
-        <button class="search-btn">Search</button>
-    </div>
-</div>
+                    <select name="status" class="filter-select">
+                        <option value="All" ${currentStatus == 'All' ? 'selected' : ''}>All Status</option>
+                        <option value="Active" ${currentStatus == 'Active' ? 'selected' : ''}>Active</option>
+                        <option value="Inactive" ${currentStatus == 'Inactive' ? 'selected' : ''}>Inactive</option>
+                    </select>
 
-<%
-    List<User> listUser = request.getAttribute("listUser");
+                    <input type="text" name="search" class="search-box" 
+                           placeholder="Search user by mail" value="${currentSearch}">
 
-%>
+                    <button type="submit" class="search-btn">Search</button>
+                </div>
+            </form>
+        </div>
 
-<table class="user-table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Full Name</th>
-            <th>Role</th>
-            <th>Mail</th>
-            <th>Status</th>
-            <th style="width: 180px;">Actions</th>
-        </tr>
-    </thead>
+        <%
+            List<User> listUser = (List<User>) request.getAttribute("listUser");
 
-    <tbody>
-    <% for (User user : listUser) { %>
-    <tr>
-        <td><%= user.getId() %></td>
-        <td><%= user.getName() %></td>
-        <td><%= user.getEmail() %></td>
-        <td><%= user.getRole() %></td>
+        %>
 
-        <td>
-            <% if ("Active".equals(user.getStatus())) { %>
-                <span class="status-active">Active</span>
-            <% } else { %>
-                <span class="status-inactive">Inactive</span>
-            <% } %>
-        </td>
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Full Name</th>
+                    <th>Mail</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
 
-        <td>
-            <a href="editUser?id=<%= user.getId() %>" class="action-link">Edit</a>
+            <tbody>
+                <% for (User user : listUser) { %>
+                <tr>
+                    <td><%= user.getId() %></td>
+                    <td><%= user.getName() %></td>
+                    <td><%= user.getEmail() %></td>
+                    <td><%= user.getRole() %></td>
 
-            <% if ("Active".equals(user.getStatus())) { %>
-                <a href="toggleStatus?id=<%= user.getId() %>" class="action-link red">Deactivate</a>
-            <% } else { %>
-                <a href="toggleStatus?id=<%= user.getId() %>" class="action-link green">Activate</a>
-            <% } %>
-        </td>
-    </tr>
-    <% } %>
-    </tbody>
-</table>
+                    <td>
+                        <% if (user.getStatus()) { %>
+                        <span class="status-active">Active</span>
+                        <% } else { %>
+                        <span class="status-inactive">Inactive</span>
+                        <% } %>
+                    </td>
 
-<div class="pagination">
-    <button>1</button>
-    <button>2</button>
-    <span>...</span>
-    <button>6</button>
-    <button>7</button>
-</div>
+                    <td>
+                        <a href="editUser?id=<%= user.getId() %>" class="action-link">Edit</a>
 
-</body>
+                        <% if (!user.getRole().equals("Admin")) { %>
+                        <% if (user.getStatus()) { %>
+                        <a href="toggleStatus?id=<%= user.getId() %>" class="action-link red">Deactivate</a>
+                        <% } else { %>
+                        <a href="toggleStatus?id=<%= user.getId() %>" class="action-link green">Activate</a>
+                        <% } %>
+                        <% } %>
+                    </td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            <button>1</button>
+            <button>2</button>
+            <span>...</span>
+            <button>6</button>
+            <button>7</button>
+        </div>
+
+    </body>
 </html>

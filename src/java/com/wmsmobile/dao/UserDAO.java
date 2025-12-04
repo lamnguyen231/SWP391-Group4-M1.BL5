@@ -4,31 +4,96 @@
  */
 package com.wmsmobile.dao;
 
+import com.wmsmobile.model.User;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.wmsmobile.model.User;
 
 /**
  *
  * @author PC
  */
+public class UserDAO extends dbConfig {
 
-public class UserDAO extends dbConfig{
-    
     public UserDAO() {
         super();
     }
 
-    public List<User> getListUserForAdmin() {
+    public List<User> getListUserForAdmin(String role, String status, String search) {
         List<User> listUser = new ArrayList<>();
+        List<Object> params = new ArrayList<>();
 
-        // Mock data
-        listUser.add(new User(1, "Nguyen Lam", "mystyme2312@gmail.com", "Employee", "Inactive"));
-        listUser.add(new User(2, "Pham Hiep", "def@testmail.com", "Keeper", "Active"));
+        StringBuilder sql = new StringBuilder(
+                "SELECT u.user_id, u.name, u.email, u.status, r.role_name "
+                + "FROM users u "
+                + "INNER JOIN roles r ON u.role_id = r.role_id ");
 
-        /*Add sql command then try catch for data */
+        boolean hasCondition = false;
 
+        if (role != null && !role.equals("All") && !role.isEmpty()) {
+            if (hasCondition == false) {
+                sql.append(" WHERE ");
+                hasCondition = true;
+            } else {
+                sql.append(" AND ");
+            }
+
+            sql.append(" r.role_name = ? ");
+            params.add(role);
+        }
+
+        if (status != null && !status.equals("All") && !status.isEmpty()) {
+            if (hasCondition == false) {
+                sql.append(" WHERE ");
+                hasCondition = true;
+            } else {
+                sql.append(" AND ");
+            }
+
+            sql.append(" u.status = ? ");
+            params.add("Active".equals(status));
+        }
+
+        if (search != null && !search.trim().isEmpty()) {
+            if (hasCondition == false) {
+                sql.append(" WHERE ");
+                hasCondition = true;
+            } else {
+                sql.append(" AND ");
+            }
+
+            sql.append(" u.email LIKE ? ");
+            params.add("%" + search + "%");
+        }
+
+        sql.append(" ORDER BY u.user_id ASC");
+
+        try {
+            Connection conn = new dbConfig().getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql.toString());
+
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                listUser.add(new User(
+                        rs.getInt("user_id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("role_name"),
+                        rs.getBoolean("status")
+                ));
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return listUser;
     }
 }
