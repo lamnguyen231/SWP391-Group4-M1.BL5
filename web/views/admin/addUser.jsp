@@ -1,65 +1,97 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title>Add User</title>
+
+    <style>
+        body { font-family: Arial; }
+        table { margin: 0 auto; border-collapse: collapse; }
+        td { padding: 8px 10px; }
+        h1 { text-align: center; margin-bottom: 20px; }
+        input, select { width: 260px; padding: 6px; }
+        .btn-box { text-align: center; margin-top: 20px; }
+        button { padding: 7px 15px; margin: 0 5px; cursor: pointer; }
+    </style>
 </head>
+
 <body>
 
 <h1>Add User</h1>
 
-<form name="fThem">
+<form name="addForm">
 
-    <label>Ho va ten</label>
-    <input type="text" name="hoten">
+<table>
 
-    <label>Ten dang nhap</label>
-    <input type="text" name="user">
+    <tr>
+        <td><label>Full Name:</label></td>
+        <td><input type="text" name="fullName"></td>
+    </tr>
 
-    <label>Mat khau</label>
-    <input type="password" name="pass">
+    <tr>
+        <td><label>Username:</label></td>
+        <td><input type="text" name="username"></td>
+    </tr>
 
-    <label>Nhap lai mat khau</label>
-    <input type="password" name="pass2">
+    <tr>
+        <td><label>Password:</label></td>
+        <td><input type="password" name="password"></td>
+    </tr>
 
-    <label>Email</label>
-    <input type="email" name="email">
+    <tr>
+        <td><label>Confirm Password:</label></td>
+        <td><input type="password" name="passwordConfirm"></td>
+    </tr>
 
-    <label>So dien thoai</label>
-    <input type="text" name="phone">
+    <tr>
+        <td><label>Email:</label></td>
+        <td><input type="email" name="email"></td>
+    </tr>
 
-    <label>Vai tro</label>
-    <select name="role">
-        <option value="">Chon vai tro</option>
-        <option>Thu kho</option>
-        <option>Nhan vien</option>
-    </select>
+    <tr>
+        <td><label>Phone Number:</label></td>
+        <td><input type="text" name="phone"></td>
+    </tr>
 
-    <br><br>
+    <tr>
+        <td><label>Role:</label></td>
+        <td>
+            <select name="role">
+                <option value="">Select a role</option>
+                <!-- backend sẽ fill hoặc giữ như này đều ok -->
+                <option value="keeper">Keeper</option>
+                <option value="employee">Employee</option>
+            </select>
+        </td>
+    </tr>
 
-    <button type="button" onclick="themNguoiDung()">Them Nguoi Dung</button>
-    <button type="reset">Lam Lai Form</button>
+</table>
+
+<div class="btn-box">
+    <button type="button" onclick="submitAdd()">Add User</button>
+    <button type="reset">Reset Form</button>
+</div>
 
 </form>
 
 <script>
-function themNguoiDung() {
-    var ht = document.fThem.hoten.value;
-    var tk = document.fThem.user.value;
-    var mk = document.fThem.pass.value;
-    var mk2 = document.fThem.pass2.value;
-    var mail = document.fThem.email.value;
-    var dt = document.fThem.phone.value;
-    var vt = document.fThem.role.value;
+function submitAdd() {
+    var name = document.addForm.fullName.value;
+    var user = document.addForm.username.value;
+    var pass = document.addForm.password.value;
+    var pass2 = document.addForm.passwordConfirm.value;
+    var email = document.addForm.email.value;
+    var role = document.addForm.role.value;
 
-    if(ht == "") { alert("Ban chua nhap ho ten"); return; }
-    if(tk == "") { alert("Ban chua nhap ten dang nhap"); return; }
-    if(mk == "") { alert("Ban chua nhap mat khau"); return; }
-    if(mk != mk2) { alert("Mat khau nhap lai khong khop"); return; }
-    if(mail == "") { alert("Ban chua nhap email"); return; }
-    if(vt == "") { alert("Ban chua chon vai tro"); return; }
+    if (name === "") { alert("Please enter full name."); return; }
+    if (user === "") { alert("Please enter username."); return; }
+    if (pass === "") { alert("Please enter password."); return; }
+    if (pass !== pass2) { alert("Passwords do not match."); return; }
+    if (email === "") { alert("Please enter email."); return; }
+    if (role === "") { alert("Please select a role."); return; }
 
-    alert("Them nguoi dung thanh cong!");
+    alert("User added successfully!");
 }
 </script>
 
