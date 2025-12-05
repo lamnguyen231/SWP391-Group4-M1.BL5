@@ -1,8 +1,13 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.wmsmobile.model.User" %>
+<%
+    User user = (User) session.getAttribute("user");
+    if(user == null) {
+        response.sendRedirect(request.getContextPath() + "/login");
+        return;
+    }
+%>
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
--->
 <html>
     <head>
         <title>TODO supply a title</title>
