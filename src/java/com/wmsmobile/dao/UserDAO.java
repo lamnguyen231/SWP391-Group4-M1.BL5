@@ -4,7 +4,6 @@
  */
 package com.wmsmobile.dao;
 
-import com.wmsmobile.dao.dbcontext.*;
 import com.wmsmobile.model.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,81 +21,7 @@ public class UserDAO extends dbConfig {
         super();
     }
 
-    public User getUserByEmailAndPassword(String email, String password) {
-        User user = null;
-        String sql = "SELECT user_id, name, email, status, role_id FROM users WHERE email = ? AND password = ?";
-        
-        try {
-            Connection conn = getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, email);
-            ps.setString(2, password);
-            
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                user = new User(
-                    rs.getInt("user_id"),
-                    rs.getString("name"),
-                    rs.getString("email"),
-                    rs.getInt("status"),
-                    rs.getInt("role_id")
-                );
-            }
-            rs.close();
-            ps.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return user;
-    }
-
-    public User getUserByEmail(String email) {
-        User user = null;
-        String sql = "SELECT user_id, name, email, status, role_id FROM users WHERE email = ?";
-        
-        try {
-            Connection conn = getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, email);
-            
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                user = new User(
-                    rs.getInt("user_id"),
-                    rs.getString("name"),
-                    rs.getString("email"),
-                    rs.getInt("status"),
-                    rs.getInt("role_id")
-                );
-            }
-            rs.close();
-            ps.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return user;
-    }
-
-    public boolean updatePassword(int userId, String newPassword) {
-        String sql = "UPDATE users SET password = ? WHERE user_id = ?";
-        
-        try {
-            Connection conn = getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, newPassword);
-            ps.setInt(2, userId);
-            
-            int rowsAffected = ps.executeUpdate();
-            ps.close();
-            
-            return rowsAffected > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public List<User> getListUserForAdmin(String role, String status, String search) {
+    public List<User> getListUserAdmin(String role, String status, String search) {
         List<User> listUser = new ArrayList<>();
         List<Object> params = new ArrayList<>();
 
@@ -159,15 +84,10 @@ public class UserDAO extends dbConfig {
                         rs.getInt("user_id"),
                         rs.getString("name"),
                         rs.getString("email"),
-<<<<<<< HEAD
                         rs.getString("role_name"),
-                        rs.getBoolean("status")));
-=======
-                        rs.getInt("status"),
-                        rs.getInt("role_id")
+                        rs.getBoolean("status")
                 );
                 listUser.add(user);
->>>>>>> 3a2426738f1d86f6ae6bf8498b7391c3613278a7
             }
             rs.close();
             ps.close();
@@ -199,61 +119,55 @@ public class UserDAO extends dbConfig {
         return false;
     }
 
-    public User getUserByEmailAndPassword(String email, String password) {
-        User user = null;
-        String sql = "SELECT user_id, name, email, status, role_id FROM users WHERE email = ? AND password = ?";
-
-        try {
-            Connection conn = getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, email);
-            ps.setString(2, password);
-
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                user = new User(
-                        rs.getInt("user_id"),
-                        rs.getString("name"),
-                        rs.getString("email"),
-                        rs.getInt("status"),
-                        rs.getInt("role_id")
-                );
-            }
-            rs.close();
-            ps.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return user;
-    }
-
-    public User getUserByEmail(String email) {
-        User user = null;
-        String sql = "SELECT user_id, name, email, status, role_id FROM users WHERE email = ?";
-
-        try {
-            Connection conn = getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, email);
-
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                user = new User(
-                        rs.getInt("user_id"),
-                        rs.getString("name"),
-                        rs.getString("email"),
-                        rs.getInt("status"),
-                        rs.getInt("role_id")
-                );
-            }
-            rs.close();
-            ps.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return user;
-    }
-
+    // public User getUserByEmailAndPassword(String email, String password) {
+    //     User user = null;
+    //     String sql = "SELECT user_id, name, email, status, role_id FROM users WHERE email = ? AND password = ?";
+    //     try {
+    //         Connection conn = getConnection();
+    //         PreparedStatement ps = conn.prepareStatement(sql);
+    //         ps.setString(1, email);
+    //         ps.setString(2, password);
+    //         ResultSet rs = ps.executeQuery();
+    //         if (rs.next()) {
+    //             user = new User(
+    //                     rs.getInt("user_id"),
+    //                     rs.getString("name"),
+    //                     rs.getString("email"),
+    //                     rs.getInt("status"),
+    //                     rs.getInt("role_id")
+    //             );
+    //         }
+    //         rs.close();
+    //         ps.close();
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    //     return user;
+    // }
+    // public User getUserByEmail(String email) {
+    //     User user = null;
+    //     String sql = "SELECT user_id, name, email, status, role_id FROM users WHERE email = ?";
+    //     try {
+    //         Connection conn = getConnection();
+    //         PreparedStatement ps = conn.prepareStatement(sql);
+    //         ps.setString(1, email);
+    //         ResultSet rs = ps.executeQuery();
+    //         if (rs.next()) {
+    //             user = new User(
+    //                     rs.getInt("user_id"),
+    //                     rs.getString("name"),
+    //                     rs.getString("email"),
+    //                     rs.getInt("status"),
+    //                     rs.getInt("role_id")
+    //             );
+    //         }
+    //         rs.close();
+    //         ps.close();
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    //     return user;
+    // }
     public boolean updatePassword(int userId, String newPassword) {
         String sql = "UPDATE users SET password = ? WHERE user_id = ?";
 

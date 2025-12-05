@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.wmsmobile.controller;
+package com.wmsmobile.controller.Admin;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,7 +21,7 @@ import jakarta.servlet.annotation.WebServlet;
  * @author PC
  */
 @WebServlet("/admin/users")
-public class AdminManageUser extends HttpServlet {
+public class UserList extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -67,7 +67,7 @@ public class AdminManageUser extends HttpServlet {
 
         UserDAO ud = new UserDAO();
 
-        List<User> list = ud.getListUserForAdmin(role, status, search);
+        List<User> list = ud.getListUserAdmin(role, status, search);
 
         request.setAttribute("listUser", list);
         request.setAttribute("currentRole", role);
