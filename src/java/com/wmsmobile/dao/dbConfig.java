@@ -11,7 +11,7 @@ public class dbConfig {
     protected static Connection con = null;
     
     private String username = "root";
-    private String password = "sa123";
+    private String password = "2312004lamvt";
     private String uri = "jdbc:mysql://localhost:3306/wms-mobile";
     private String driver = "com.mysql.cj.jdbc.Driver";
 

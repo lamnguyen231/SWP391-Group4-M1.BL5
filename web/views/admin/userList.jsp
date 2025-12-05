@@ -6,7 +6,8 @@
     <head>
         <meta charset="UTF-8">
         <title>User Management</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/userList.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/adminCommon.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/adminUserList.css">
     </head>
     <body>
 
