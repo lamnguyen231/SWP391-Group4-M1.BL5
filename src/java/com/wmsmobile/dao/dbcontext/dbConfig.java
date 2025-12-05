@@ -3,19 +3,15 @@ package com.wmsmobile.dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class dbConfig {
 
-    protected static Connection con = null;
-    private PreparedStatement ps = null; 
-    private ResultSet rs = null; 
+    protected static Connection con = null; 
     
     private String username = "root";
-    private String password = "2312004lamvt";
+    private String password = "sa123";
     private String uri = "jdbc:mysql://localhost:3306/wms-mobile";
     private String driver = "com.mysql.cj.jdbc.Driver";
 
@@ -42,6 +38,6 @@ public class dbConfig {
     }
 
     public static void main(String[] args) {
-        dbConfig db = new dbConfig();
+        new dbConfig();
     }
 }

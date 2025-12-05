@@ -116,7 +116,7 @@
         </form>
         
         <div class="links">
-            <a href="forgotpassword.jsp">Forgot Password?</a>
+            <a href="<%= request.getContextPath() %>/forgotPassword">Forgot Password?</a>
             <span>|</span>
             <a href="register.jsp">Register</a>
         </div>

@@ -56,6 +56,19 @@
         .logout-btn:hover {
             background: #f0f0f0;
         }
+        .change-password-btn {
+            background: transparent;
+            color: white;
+            padding: 8px 20px;
+            border: 2px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .change-password-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
         .container {
             max-width: 1200px;
             margin: 40px auto;
@@ -92,6 +105,7 @@
         <h1>WMS Mobile System</h1>
         <div class="user-info">
             <span>Welcome, <%= user.getName() %></span>
+            <a href="<%= request.getContextPath() %>/changePassword" class="change-password-btn">Change Password</a>
             <a href="<%= request.getContextPath() %>/logout" class="logout-btn">Logout</a>
         </div>
     </div>

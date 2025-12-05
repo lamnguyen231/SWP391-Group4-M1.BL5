@@ -1,8 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.wmsmobile.model.User" %>
+<%
+    User user = (User) session.getAttribute("user");
+    if(user == null) {
+        response.sendRedirect(request.getContextPath() + "/login");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Forgot Password - WMS Mobile</title>
+    <title>Change Password - WMS Mobile</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
@@ -19,7 +27,7 @@
             justify-content: center;
             align-items: center;
         }
-        .forgot-password-container {
+        .change-password-container {
             background: white;
             padding: 40px;
             border-radius: 10px;
@@ -30,13 +38,7 @@
         h2 {
             text-align: center;
             color: #333;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            text-align: center;
-            color: #666;
             margin-bottom: 30px;
-            font-size: 14px;
         }
         .form-group {
             margin-bottom: 20px;
@@ -47,7 +49,7 @@
             color: #555;
             font-weight: bold;
         }
-        input[type="email"] {
+        input[type="password"] {
             width: 100%;
             padding: 12px;
             border: 1px solid #ddd;
@@ -55,7 +57,7 @@
             font-size: 14px;
             transition: border-color 0.3s;
         }
-        input[type="email"]:focus {
+        input[type="password"]:focus {
             outline: none;
             border-color: #667eea;
         }
@@ -70,6 +72,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.2s;
+            margin-top: 10px;
         }
         button:hover {
             transform: translateY(-2px);
@@ -77,6 +80,14 @@
         .error-message {
             background: #ffebee;
             color: #c62828;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .success-message {
+            background: #e8f5e9;
+            color: #2e7d32;
             padding: 10px;
             border-radius: 5px;
             margin-bottom: 20px;
@@ -93,18 +104,24 @@
         .back-link a:hover {
             text-decoration: underline;
         }
-        .icon {
+        .user-info {
             text-align: center;
-            font-size: 48px;
             margin-bottom: 20px;
+            color: #666;
+        }
+        .user-info strong {
+            color: #333;
         }
     </style>
 </head>
 <body>
-    <div class="forgot-password-container">
-        <div class="icon">🔐</div>
-        <h2>Forgot Password?</h2>
-        <p class="subtitle">Enter your email to receive a temporary password</p>
+    <div class="change-password-container">
+        <h2>Change Password</h2>
+        
+        <div class="user-info">
+            <strong><%= user.getName() %></strong><br>
+            <%= user.getEmail() %>
+        </div>
         
         <% if(request.getAttribute("error") != null) { %>
             <div class="error-message">
@@ -112,18 +129,36 @@
             </div>
         <% } %>
         
-        <form action="<%= request.getContextPath() %>/forgotPassword" method="post">
+        <% if(request.getAttribute("success") != null) { %>
+            <div class="success-message">
+                <%= request.getAttribute("success") %>
+            </div>
+        <% } %>
+        
+        <form action="<%= request.getContextPath() %>/changePassword" method="post">
             <div class="form-group">
-                <label for="email">Email Address:</label>
-                <input type="email" id="email" name="email" required 
-                       placeholder="Enter your registered email">
+                <label for="currentPassword">Current Password:</label>
+                <input type="password" id="currentPassword" name="currentPassword" required 
+                       placeholder="Enter current password">
             </div>
             
-            <button type="submit">Reset Password</button>
+            <div class="form-group">
+                <label for="newPassword">New Password:</label>
+                <input type="password" id="newPassword" name="newPassword" required 
+                       placeholder="Enter new password (min 6 characters)">
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword">Confirm New Password:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required 
+                       placeholder="Confirm new password">
+            </div>
+            
+            <button type="submit">Change Password</button>
         </form>
         
         <div class="back-link">
-            <a href="<%= request.getContextPath() %>/login">← Back to Login</a>
+            <a href="<%= request.getContextPath() %>/views/homepage.jsp">← Back to Home</a>
         </div>
     </div>
 </body>
