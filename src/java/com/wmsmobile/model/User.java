@@ -10,37 +10,26 @@ package com.wmsmobile.model;
  */
 public class User {
 
-    private int userId;
+    private int id;
     private String name;
     private String email;
-    private int status;
-    private int roleId;
+    private String role;
+    private boolean status;
 
-    public User() {
-    }
-
-    public User(int userId, String name, String email, int status, int roleId) {
-        this.userId = userId;
+    public User(int id, String name, String email, String role, boolean status) {
+        this.id = id;
         this.name = name;
         this.email = email;
+        this.role = role;
         this.status = status;
-        this.roleId = roleId;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public int getId() {
+        return id;
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getEmail() {
@@ -51,24 +40,7 @@ public class User {
         this.email = email;
     }
 
-    public int getStatus() {
+    public boolean getStatus() {
         return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public int getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" + "userId=" + userId + ", name=" + name + ", email=" + email + ", status=" + status + ", roleId=" + roleId + '}';
     }
 }
