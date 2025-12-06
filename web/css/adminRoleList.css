@@ -40,7 +40,21 @@
 .action-link:hover {
 	text-decoration: underline;
 }
+.status-active,
+.status-inactive {
+	padding: 4px 10px;
+	border-radius: 20px;
+	font-size: 16px;
+	font-weight: 600;
+	text-transform: capitalize;
+}
 
-.action-link.delete {
-	color: #e74c3c;
+.status-active {
+	background-color: #e8f5e9;
+	color: #2e7d32;
+}
+
+.status-inactive {
+	background-color: #ffebee;
+	color: #c62828;
 }

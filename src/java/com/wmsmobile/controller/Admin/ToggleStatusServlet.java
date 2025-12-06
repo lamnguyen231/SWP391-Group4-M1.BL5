@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.wmsmobile.controller;
+package com.wmsmobile.controller.Admin;
 
 import jakarta.servlet.annotation.WebServlet;
 import java.io.IOException;
@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * @author PC
  */
 @WebServlet(name = "ToggleStatus", urlPatterns = {"/admin/toggleStatus"})
-public class ToggleStatus extends HttpServlet {
+public class ToggleStatusServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
