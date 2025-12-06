@@ -1,36 +1,31 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package com.wmsmobile.controller.Admin;
 
+import com.wmsmobile.dao.RoleDAO;
+import com.wmsmobile.model.Role;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-
-import com.wmsmobile.dao.UserDAO;
-import com.wmsmobile.model.User;
 import jakarta.servlet.annotation.WebServlet;
+import java.util.List;
 
 /**
  *
- * @author PC
+ * @author super
  */
-@WebServlet("/admin/users")
-public class UserList extends HttpServlet {
+@WebServlet(name = "RoleList", urlPatterns = { "/admin/roles" })
+public class RoleListServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -40,50 +35,43 @@ public class UserList extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UserListServlet</title>");
+            out.println("<title>Servlet RoleList</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UserListServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet RoleList at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String role = request.getParameter("role");
-        String status = request.getParameter("status");
-        String search = request.getParameter("search");
+        RoleDAO dao = new RoleDAO();
+        List<Role> list = dao.getListRoleAdmin();
 
-        UserDAO ud = new UserDAO();
+        request.setAttribute("listRole", list);
 
-        List<User> list = ud.getListUserAdmin(role, status, search);
-
-        request.setAttribute("listUser", list);
-        request.setAttribute("currentRole", role);
-        request.setAttribute("currentStatus", status);
-        request.setAttribute("currentSearch", search);
-
-        request.getRequestDispatcher("/views/admin/userList.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/admin/roleList.jsp").forward(request, response);
     }
 
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

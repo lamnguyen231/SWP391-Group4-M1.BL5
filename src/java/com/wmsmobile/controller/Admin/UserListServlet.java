@@ -1,22 +1,27 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package com.wmsmobile.controller.Admin;
 
-import com.wmsmobile.dao.RoleDAO;
-import com.wmsmobile.model.Role;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.annotation.WebServlet;
 import java.util.List;
+
+import com.wmsmobile.dao.UserDAO;
+import com.wmsmobile.model.User;
+import jakarta.servlet.annotation.WebServlet;
 
 /**
  *
- * @author super
+ * @author PC
  */
-@WebServlet(name = "RoleList", urlPatterns = {"/admin/roles"})
-public class RoleList extends HttpServlet {
+@WebServlet("/admin/users")
+public class UserListServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +40,10 @@ public class RoleList extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RoleList</title>");
+            out.println("<title>Servlet UserListServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RoleList at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UserListServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,13 +61,20 @@ public class RoleList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RoleDAO rd = new RoleDAO();
+        String role = request.getParameter("role");
+        String status = request.getParameter("status");
+        String search = request.getParameter("search");
 
-        List<Role> list = rd.getListRoleAdmin();
+        UserDAO ud = new UserDAO();
 
-        request.setAttribute("listRole", list);
+        List<User> list = ud.getListUserAdmin(role, status, search);
 
-        request.getRequestDispatcher("/views/admin/roleList.jsp").forward(request, response);
+        request.setAttribute("listUser", list);
+        request.setAttribute("currentRole", role);
+        request.setAttribute("currentStatus", status);
+        request.setAttribute("currentSearch", search);
+
+        request.getRequestDispatcher("/views/admin/userList.jsp").forward(request, response);
     }
 
     /**

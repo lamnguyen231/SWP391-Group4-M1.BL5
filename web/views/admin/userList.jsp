@@ -79,11 +79,11 @@
                         <a href="edit?id=<%= user.getId() %>" class="action-link">Edit</a>
 
                         <% if (!user.getRole().equals("Admin")) { %>
-                        <% if (user.getStatus()) { %>
-                        <a href="toggleStatus?id=<%= user.getId() %>" class="action-link red">Deactivate</a>
-                        <% } else { %>
-                        <a href="toggleStatus?id=<%= user.getId() %>" class="action-link green">Activate</a>
-                        <% } %>
+                            <% if (user.getStatus()) { %>
+                                <a href="toggleStatus?id=<%= user.getId() %>" class="action-link red">Deactivate</a>
+                            <% } else { %>
+                                 <a href="toggleStatus?id=<%= user.getId() %>" class="action-link green">Activate</a>
+                            <% } %>
                         <% } %>
                     </td>
                 </tr>
