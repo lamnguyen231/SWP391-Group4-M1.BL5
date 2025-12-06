@@ -105,6 +105,7 @@
         <h1>WMS Mobile System</h1>
         <div class="user-info">
             <span>Welcome, <%= user.getName() %></span>
+            <a href="<%= request.getContextPath() %>/profile" class="change-password-btn">My Profile</a>
             <a href="<%= request.getContextPath() %>/changePassword" class="change-password-btn">Change Password</a>
             <a href="<%= request.getContextPath() %>/logout" class="logout-btn">Logout</a>
         </div>
@@ -114,8 +115,14 @@
         <div class="welcome-card">
             <h2>Welcome to WMS Mobile!</h2>
             <p>Email: <%= user.getEmail() %></p>
-            <span class="role-badge">Role ID: <%= user.getRoleId() %></span>
-            <p style="margin-top: 20px; color: #999;">System is ready for use</p>
+            <p>Role: <%= user.getRole() %></p>
+            <div style="margin-top: 20px;">
+                <a href="<%= request.getContextPath() %>/profile" style="color: #667eea; text-decoration: none; font-weight: 600;">📋 View My Profile</a>
+                <% if("Admin".equals(user.getRole())) { %>
+                    <span style="margin: 0 10px;">|</span>
+                    <a href="<%= request.getContextPath() %>/admin/users" style="color: #667eea; text-decoration: none; font-weight: 600;">👥 Manage Users</a>
+                <% } %>
+            </div>
         </div>
     </div>
 </body>
