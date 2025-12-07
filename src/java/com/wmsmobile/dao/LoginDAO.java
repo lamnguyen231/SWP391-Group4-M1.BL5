@@ -4,15 +4,24 @@
  */
 package com.wmsmobile.dao;
 
+import com.wmsmobile.model.Account;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author hp
  */
-public class AccountDAO extends dbConfig {
+public class LoginDAO extends dbConfig {
     public Account getAccountByLogin(String username, String password) {
         try {
             String sql = "SELECT * FROM Account where username like ? and password like ?";
-            PreparedStatement stm = connection.prepareStatement(sql);
+
+            Connection conn = new dbConfig().getConnection();
+            PreparedStatement stm = conn.prepareStatement(sql);
+            
             stm.setString(1, username);
             stm.setString(2, password);
             ResultSet rs = stm.executeQuery();
