@@ -103,8 +103,8 @@
         
         <form action="login" method="post">
             <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required 
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required 
                        placeholder="Enter your email">
             </div>
             <div class="form-group">
@@ -115,10 +115,11 @@
             <button type="submit">Login</button>
         </form>
         
+        
         <div class="links">
             <a href="<%= request.getContextPath() %>/forgotPassword">Forgot Password?</a>
             <span>|</span>
-            <a href="register.jsp">Register</a>
+            <a href="homepage.jsp">Back To HomePage</a>
         </div>
     </div>
 </body>
