@@ -10,6 +10,8 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/adminRoleList.css">
     </head>
     <body>
+        
+        <a href="${pageContext.request.contextPath}/admin/users" style="text-decoration: none">Go to user list</a>
 
         <h2 class="title">System Role List</h2>
 
@@ -89,21 +91,21 @@
 
     <script>
         function filterTable() {
-            var searchFilter = document.getElementById("searchInput").value.toLowerCase();
-            var statusFilter = document.getElementById("statusInput").value;
+            let searchFilter = document.getElementById("searchInput").value.toLowerCase();
+            let statusFilter = document.getElementById("statusInput").value;
 
-            var rows = document.getElementsByClassName("role-row");
-            var visibleCount = 0;
+            let rows = document.getElementsByClassName("role-row");
+            let visibleCount = 0;
 
-            for (var i = 0; i < rows.length; i++) {
-                var row = rows[i];
+            for (let i = 0; i < rows.length; i++) {
+                let row = rows[i];
                 
-                var roleName = row.querySelector(".role-name").innerText.toLowerCase();
-                var roleStatus = row.getAttribute("data-status");
+                let roleName = row.querySelector(".role-name").innerText.toLowerCase();
+                let roleStatus = row.getAttribute("data-status");
 
-                var matchesSearch = roleName.includes(searchFilter);
+                let matchesSearch = roleName.includes(searchFilter);
                 
-                var matchesStatus = (statusFilter === "all") || (roleStatus === statusFilter);
+                let matchesStatus = (statusFilter === "all") || (roleStatus === statusFilter);
 
                 if (matchesSearch && matchesStatus) {
                     row.style.display = "";

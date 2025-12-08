@@ -5,6 +5,8 @@
 package com.wmsmobile.controller;
 
 //import com.wmsmobile.dao.AccountDAO;
+import com.wmsmobile.dao.LoginDAO;
+import com.wmsmobile.model.Account;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,8 +21,6 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class LoginController extends HttpServlet {
 
-    
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -33,7 +33,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
     }
 
     /**
@@ -46,20 +46,18 @@ public class LoginController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        Account a = new AccountDAO().getAccountByLogin(username, password);
-        if(a == null){
+        Account a = new LoginDAO().getAccountByLogin(username, password);
+        if (a == null) {
             request.setAttribute("error", "Wrong account");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        }else{
+            request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
+        } else {
             request.getSession().setAttribute("account", a);
             request.getRequestDispatcher("homepage.jsp").forward(request, response);
         }
     }
-
-    
 
     /**
      * Returns a short description of the servlet.

@@ -119,55 +119,6 @@ public class UserDAO extends dbConfig {
         return false;
     }
 
-    // public User getUserByEmailAndPassword(String email, String password) {
-    //     User user = null;
-    //     String sql = "SELECT user_id, name, email, status, role_id FROM users WHERE email = ? AND password = ?";
-    //     try {
-    //         Connection conn = getConnection();
-    //         PreparedStatement ps = conn.prepareStatement(sql);
-    //         ps.setString(1, email);
-    //         ps.setString(2, password);
-    //         ResultSet rs = ps.executeQuery();
-    //         if (rs.next()) {
-    //             user = new User(
-    //                     rs.getInt("user_id"),
-    //                     rs.getString("name"),
-    //                     rs.getString("email"),
-    //                     rs.getInt("status"),
-    //                     rs.getInt("role_id")
-    //             );
-    //         }
-    //         rs.close();
-    //         ps.close();
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    //     return user;
-    // }
-    // public User getUserByEmail(String email) {
-    //     User user = null;
-    //     String sql = "SELECT user_id, name, email, status, role_id FROM users WHERE email = ?";
-    //     try {
-    //         Connection conn = getConnection();
-    //         PreparedStatement ps = conn.prepareStatement(sql);
-    //         ps.setString(1, email);
-    //         ResultSet rs = ps.executeQuery();
-    //         if (rs.next()) {
-    //             user = new User(
-    //                     rs.getInt("user_id"),
-    //                     rs.getString("name"),
-    //                     rs.getString("email"),
-    //                     rs.getInt("status"),
-    //                     rs.getInt("role_id")
-    //             );
-    //         }
-    //         rs.close();
-    //         ps.close();
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    //     return user;
-    // }
     public boolean updatePassword(int userId, String newPassword) {
         String sql = "UPDATE users SET password = ? WHERE user_id = ?";
 

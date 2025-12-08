@@ -10,6 +10,8 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/adminUserList.css">
     </head>
     <body>
+        
+        <a href="${pageContext.request.contextPath}/admin/roles" style="text-decoration: none">Go to roles list</a>
 
         <h2 class="title">System User List</h2>
 
@@ -44,7 +46,27 @@
 
         <%
             List<User> listUser = (List<User>) request.getAttribute("listUser");
+            if (listUser == null) { listUser = new ArrayList<>(); }
 
+            int currentPage = 1;
+            int totalPages = 1;
+            
+            if (request.getAttribute("currentPage") != null) {
+                currentPage = (Integer) request.getAttribute("currentPage");
+            }
+            if (request.getAttribute("totalPages") != null) {
+                totalPages = (Integer) request.getAttribute("totalPages");
+            }
+
+            String cRole = (String) request.getAttribute("currentRole");
+            String cStatus = (String) request.getAttribute("currentStatus");
+            String cSearch = (String) request.getAttribute("currentSearch");
+            
+            if(cRole == null) cRole = "All";
+            if(cStatus == null) cStatus = "All";
+            if(cSearch == null) cSearch = "";
+
+            String filterParams = "&role=" + cRole + "&status=" + cStatus + "&search=" + cSearch;
         %>
 
         <table class="user-table">
@@ -60,44 +82,53 @@
             </thead>
 
             <tbody>
-                <% for (User user : listUser) { %>
-                <tr>
-                    <td><%= user.getId() %></td>
-                    <td><%= user.getName() %></td>
-                    <td><%= user.getEmail() %></td>
-                    <td><%= user.getRole() %></td>
+                <% if (listUser.isEmpty()) { %>
+                    <tr>
+                        <td colspan="6" style="text-align:center;">No users found.</td>
+                    </tr>
+                <% } else { %>
+                    <% for (User user : listUser) { %>
+                    <tr>
+                        <td><%= user.getId() %></td>
+                        <td><%= user.getName() %></td>
+                        <td><%= user.getEmail() %></td>
+                        <td><%= user.getRole() %></td>
 
-                    <td>
-                        <% if (user.getStatus()) { %>
-                        <span class="status-active">Active</span>
-                        <% } else { %>
-                        <span class="status-inactive">Inactive</span>
-                        <% } %>
-                    </td>
-
-                    <td>
-                        <a href="edit?id=<%= user.getId() %>" class="action-link">Edit</a>
-
-                        <% if (!user.getRole().equals("Admin")) { %>
+                        <td>
                             <% if (user.getStatus()) { %>
-                                <a href="toggleStatus?id=<%= user.getId() %>" class="action-link red">Deactivate</a>
+                            <span class="status-active">Active</span>
                             <% } else { %>
-                                 <a href="toggleStatus?id=<%= user.getId() %>" class="action-link green">Activate</a>
+                            <span class="status-inactive">Inactive</span>
                             <% } %>
-                        <% } %>
-                    </td>
-                </tr>
+                        </td>
+
+                        <td>
+                            <a href="edit?id=<%= user.getId() %>" class="action-link">Edit</a>
+
+                            <% if (!"Admin".equals(user.getRole())) { %>
+                                <% if (user.getStatus()) { %>
+                                    <a href="toggleStatus?id=<%= user.getId() %>" class="action-link red">Deactivate</a>
+                                <% } else { %>
+                                     <a href="toggleStatus?id=<%= user.getId() %>" class="action-link green">Activate</a>
+                                <% } %>
+                            <% } %>
+                        </td>
+                    </tr>
+                    <% } %>
                 <% } %>
             </tbody>
         </table>
 
-        <div class="pagination">
-            <button>1</button>
-            <button>2</button>
-            <span>...</span>
-            <button>6</button>
-            <button>7</button>
-        </div>
+        <% if (totalPages > 1) { %>
+            <div class="pagination">
+                <% for (int i = 1; i <= totalPages; i++) { %>
+                    <a href="users?page=<%= i %><%= filterParams %>" 
+                    class="<%= (i == currentPage) ? "active" : "" %>">
+                    <%= i %>
+                    </a>
+                <% } %>
+            </div>
+        <% } %>
 
     </body>
 </html>
