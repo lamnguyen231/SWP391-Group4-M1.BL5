@@ -22,7 +22,7 @@ import jakarta.servlet.annotation.WebServlet;
  *
  * @author PC
  */
-@WebServlet("/admin/users")
+@WebServlet(name = "UserList", urlPatterns = { "/admin/users" })
 public class UserListServlet extends HttpServlet {
 
     /**
