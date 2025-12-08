@@ -1,12 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.wmsmobile.model.User" %>
-<%
-    User user = (User) session.getAttribute("user");
-    if(user == null) {
-        response.sendRedirect(request.getContextPath() + "/login");
-        return;
-    }
-%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -62,14 +55,14 @@
                     <li><a href="#">Products</a></li>
                     <li><a href="#">Roles</a></li>
                     <li><a href="#">Users</a></li>
-                    <li><a href="#">Logout</a></li>
+                    <li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
                 </ul>
             </div>
         </div>
         <div class="container">
             <h1>Welcome to the Home Page</h1>
             <p>This is where you can find information about our products and services.</p>
-            <a href="login.jsp">Login</a>
+            <a href="${pageContext.request.contextPath}/login">Login</a>
         </div>
     </body>
 </html>

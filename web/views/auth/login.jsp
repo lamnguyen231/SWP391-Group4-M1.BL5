@@ -101,10 +101,10 @@
             </div>
         <% } %>
         
-        <form action="login" method="post">
+        <form action="${pageContext.request.contextPath}/login" method="post">
             <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required 
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required 
                        placeholder="Enter your email">
             </div>
             <div class="form-group">
@@ -119,7 +119,7 @@
         <div class="links">
             <a href="<%= request.getContextPath() %>/forgotPassword">Forgot Password?</a>
             <span>|</span>
-            <a href="homepage.jsp">Back To HomePage</a>
+            <a href="<%= request.getContextPath() %>">Back To HomePage</a>
         </div>
     </div>
 </body>
