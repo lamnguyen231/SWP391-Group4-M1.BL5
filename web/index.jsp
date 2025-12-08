@@ -1,3 +1,3 @@
 <%
-    response.sendRedirect("views/homepage.jsp");
+    response.sendRedirect(request.getContextPath() + "/");
 %>

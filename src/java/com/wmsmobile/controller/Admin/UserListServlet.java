@@ -10,6 +10,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import com.wmsmobile.dao.UserDAO;
@@ -27,10 +29,10 @@ public class UserListServlet extends HttpServlet {
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -49,41 +51,87 @@ public class UserListServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         String role = request.getParameter("role");
         String status = request.getParameter("status");
         String search = request.getParameter("search");
 
+        if (role == null) {
+            role = "All";
+        }
+        if (status == null) {
+            status = "All";
+        }
+        if (search == null) {
+            search = "";
+        }
+
+        int page = 1;
+        int pageSize = 5;
+        if (request.getParameter("page") != null) {
+            try {
+                page = Integer.parseInt(request.getParameter("page"));
+            } catch (NumberFormatException e) {
+                page = 1;
+            }
+        }
+
         UserDAO ud = new UserDAO();
+        List<User> fullList = ud.getListUserAdmin(role, status, search);
 
-        List<User> list = ud.getListUserAdmin(role, status, search);
+        int totalUsers = fullList.size();
+        int totalPages = (int) Math.ceil((double) totalUsers / pageSize);
 
-        request.setAttribute("listUser", list);
+        if (totalPages == 0) {
+            totalPages = 1;
+        }
+
+        int start = (page - 1) * pageSize;
+        int end = Math.min(start + pageSize, totalUsers);
+
+        List<User> paginatedList;
+
+        if (start > totalUsers) {
+            paginatedList = new ArrayList<>();
+        } else {
+            paginatedList = fullList.subList(start, end);
+        }
+
+        request.setAttribute("listUser", paginatedList);
         request.setAttribute("currentRole", role);
         request.setAttribute("currentStatus", status);
         request.setAttribute("currentSearch", search);
 
-        request.getRequestDispatcher("/views/admin/userList.jsp").forward(request, response);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+
+        request.setAttribute("activeMenu", "users");
+
+        request.setAttribute("contentPage", "/views/admin/userList.jsp");
+
+        request.getRequestDispatcher("/views/admin/adminLayout.jsp").forward(request, response);
     }
 
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
