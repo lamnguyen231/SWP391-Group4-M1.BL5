@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `wms-mobile` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `wms-mobile`;
--- MySQL dump 10.13  Distrib 8.0.43, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
 --
 -- Host: localhost    Database: wms-mobile
 -- ------------------------------------------------------
--- Server version	8.0.43
+-- Server version	8.0.42
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -115,9 +115,10 @@ DROP TABLE IF EXISTS `roles`;
 CREATE TABLE `roles` (
   `role_id` int NOT NULL AUTO_INCREMENT,
   `role_name` varchar(50) NOT NULL,
+  `status` bit(1) DEFAULT b'1',
   PRIMARY KEY (`role_id`),
   UNIQUE KEY `role_name` (`role_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,7 +127,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'Admin'),(3,'Employee'),(2,'Keeper');
+INSERT INTO `roles` VALUES (1,'Admin',_binary ''),(2,'Keeper',_binary ''),(3,'Employee',_binary ''),(4,'Accountant',_binary '\0');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -148,7 +149,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `email` (`email`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -157,17 +158,9 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES 
-(1,'Lam Nguyen','lam.nguyen@wms.com','123456',1,1),
-(2,'Sarah Jenkins','sarah.j@wms.com','123456',1,2),
-(3,'Mike Ross','mike.ross@wms.com','123456',0,3),
-(4,'John Doe','john.doe@wms.com','123456',1,3);
+INSERT INTO `users` VALUES (1,'Lam Nguyen','lam.nguyen@wms.com','123456',1,1),(2,'Sarah Jenkins','sarah.j@wms.com','123456',1,2),(3,'Mike Ross','mike.ross@wms.com','123456',0,3),(4,'John Doe','john.doe@wms.com','123456',1,3),(5,'Alice Smith','alice.smith@example.com','hashed_password_placeholder',1,3),(6,'Bob Jones','bob.jones@example.com','hashed_password_placeholder',1,2),(7,'Charlie Brown','charlie.brown@example.com','hashed_password_placeholder',1,1),(8,'David Wilson','david.wilson@example.com','hashed_password_placeholder',1,3),(9,'Eva Green','eva.green@example.com','hashed_password_placeholder',0,3),(10,'Frank White','frank.white@example.com','hashed_password_placeholder',1,2),(11,'Grace Lee','grace.lee@example.com','hashed_password_placeholder',1,3),(12,'Henry Kim','henry.kim@example.com','hashed_password_placeholder',1,3),(13,'Ivy Chen','ivy.chen@example.com','hashed_password_placeholder',1,1),(14,'Jack Miller','jack.miller@example.com','hashed_password_placeholder',1,2);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping routines for database 'wms-mobile'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -178,4 +171,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-04 17:11:49
+-- Dump completed on 2025-12-08 21:32:23
