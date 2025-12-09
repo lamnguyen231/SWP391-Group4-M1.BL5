@@ -1,7 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-    <%@ page import="com.wmsmobile.model.User" %>
-        <!DOCTYPE html>
-        <html>
+<%@ page import="com.wmsmobile.model.User" %>
+<%
+    User user = (User) session.getAttribute("user");
+    String role = (user != null) ? user.getRole() : "";
+%>
+<!DOCTYPE html>
+<html>
 
         <head>
             <title>Home Page</title>
@@ -19,15 +23,22 @@
             <div class="navbar">
                 <div class="container-fluid">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="homepage.jsp">Home</a></li>
+                        <li class="active"><a href="/views/homepage.jsp">Home</a></li>
                         <li><a href="#"></a></li>
                         <li><a href="#">Products</a></li>
-                        <c:if test="${sessionScope.account.role == 1}">
+                        <% if("Admin".equals(role)) { %>
                             <li><a href="#">Roles</a></li>
-                        </c:if>
-                        <c:if test="${sessionScope.account.role == 1}">
                             <li><a href="#">Users</a></li>
-                        </c:if>
+                        <% } %>
+                        <% if("Keeper".equals(role)) { %>
+                            <li><a href="#">Inventory</a></li>
+                        <% } %>
+                        <% if("Employee".equals(role)) { %>
+                            <li><a href="#">Orders</a></li>
+                        <% } %>
+                        <% if("Accountant".equals(role)) { %>
+                            <li><a href="#">Reports</a></li>
+                        <% } %>
 
 
                         <li class="nav-item dropdown">
@@ -36,8 +47,8 @@
                                 Settings
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownSettings">
-                                <li><a class="dropdown-item" href="#">Profile</a></li>
-                                <li><a class="dropdown-item" href="#">ChangePassword</a></li>
+                                <li><a class="dropdown-item" href="<%= request.getContextPath() %>/viewProfile">Profile</a></li>
+                                <li><a class="dropdown-item" href="<%= request.getContextPath() %>/changePassword">ChangePassword</a></li>
                                 <li><a class="dropdown-item" href="#">Customize</a></li>
                             </ul>
                         </li>

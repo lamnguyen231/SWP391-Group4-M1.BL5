@@ -28,8 +28,16 @@ public class User {
         return id;
     }
 
+    public int getUserId() {
+        return id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -40,11 +48,11 @@ public class User {
         this.email = email;
     }
 
-    public boolean getStatus() {
-        return status;
-    }
-    
     public String getRole() {
         return role;
+    }
+
+    public boolean getStatus() {
+        return status;
     }
 }
