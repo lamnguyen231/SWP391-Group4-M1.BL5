@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.wmsmobile.dao;
 
 import com.wmsmobile.model.User;
@@ -194,11 +190,22 @@ public class UserDAO extends dbConfig {
                 return user;
             }
         } catch (Exception e) {
+            System.out.println("[ERROR] Login exception: " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
 
+    /**
+     * Get user by email only (for forgot password)
+     */
     public User getUserByEmail(String email) {
         Connection conn = null;
         try {
@@ -226,6 +233,7 @@ public class UserDAO extends dbConfig {
                 return user;
             }
         } catch (Exception e) {
+            System.out.println("[ERROR] Get user by email exception: " + e.getMessage());
             e.printStackTrace();
         } finally {
             try {
@@ -237,6 +245,9 @@ public class UserDAO extends dbConfig {
         return null;
     }
 
+    /**
+     * Update user password
+     */
     public boolean updatePassword(int userId, String newPassword) {
         Connection conn = null;
         try {

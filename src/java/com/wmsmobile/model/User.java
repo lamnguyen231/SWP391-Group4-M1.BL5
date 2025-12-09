@@ -28,6 +28,10 @@ public class User {
         return id;
     }
 
+    public int getUserId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
@@ -42,6 +46,10 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRole() {
+        return role;
     }
 
     public boolean getStatus() {
