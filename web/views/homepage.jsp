@@ -9,7 +9,7 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
             <!-- Bootstrap 5 for a more modern design -->
-            
+
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
             <!-- Custom Styles -->
             <link rel="stylesheet" href="css/homePage.css" />
@@ -22,13 +22,8 @@
                         <li class="active"><a href="homepage.jsp">Home</a></li>
                         <li><a href="#"></a></li>
                         <li><a href="#">Products</a></li>
-                        <c:if test="${sessionScope.account.role == 1}">
-                            <li><a href="#">Roles</a></li>
-                        </c:if>
-                        <c:if test="${sessionScope.account.role == 1}">
-                            <li><a href="#">Users</a></li>
-                        </c:if>
-
+                        <li><a href="#">Report</a></li>
+                        <li><a href="#">CreateRecord</a></li>
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSettings" role="button"
@@ -49,6 +44,7 @@
             <div class="container">
                 <h1>Welcome to the MobilePhone WareHouse G4</h1>
                 <a href="${pageContext.request.contextPath}/login">Login</a>
+
             </div>
         </body>
 
