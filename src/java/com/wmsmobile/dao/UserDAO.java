@@ -163,20 +163,32 @@ public class UserDAO extends dbConfig {
         return false;
     }
 
+    /**
+     * Xác thực user khi đăng nhập bằng email và password
+     * Được sử dụng trong LoginController
+     * 
+     * @param email Email của user
+     * @param password Password (plain text - chưa hash)
+     * @return User object nếu login thành công, null nếu sai credentials
+     */
     public User getAccountByLogin(String email, String password) {
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        
         try {
             String sql = "SELECT u.user_id, u.name, u.email, u.status, r.role_name "
                     + "FROM users u "
                     + "INNER JOIN roles r ON u.role_id = r.role_id "
                     + "WHERE u.email = ? AND u.password = ?";
 
-            Connection conn = new dbConfig().getConnection();
-            PreparedStatement stm = conn.prepareStatement(sql);
+            conn = new dbConfig().getConnection();
+            stm = conn.prepareStatement(sql);
 
             stm.setString(1, email);
             stm.setString(2, password);
 
-            ResultSet rs = stm.executeQuery();
+            rs = stm.executeQuery();
 
             if (rs.next()) {
                 User user = new User(
@@ -190,12 +202,12 @@ public class UserDAO extends dbConfig {
                 return user;
             }
         } catch (Exception e) {
-            System.out.println("[ERROR] Login exception: " + e.getMessage());
             e.printStackTrace();
         } finally {
             try {
                 if (rs != null) rs.close();
-                if (ps != null) ps.close();
+                if (stm != null) stm.close();
+                if (conn != null) conn.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }

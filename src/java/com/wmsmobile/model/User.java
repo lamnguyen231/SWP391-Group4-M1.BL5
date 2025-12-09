@@ -55,8 +55,4 @@ public class User {
     public boolean getStatus() {
         return status;
     }
-    
-    public String getRole() {
-        return role;
-    }
 }
