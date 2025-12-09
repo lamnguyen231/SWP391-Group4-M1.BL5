@@ -106,13 +106,17 @@
         <h2>Forgot Password?</h2>
         <p class="subtitle">Enter your email to receive a temporary password</p>
         
+        <!-- Hiển thị thông báo lỗi (email không tồn tại, tài khoản bị khóa, v.v.) -->
         <% if(request.getAttribute("error") != null) { %>
             <div class="error-message">
                 <%= request.getAttribute("error") %>
             </div>
         <% } %>
         
+        <!-- Form quên mật khẩu - POST đến servlet /forgotPassword -->
+        <!-- Hệ thống sẽ tạo token và gửi link reset qua email -->
         <form action="<%= request.getContextPath() %>/forgotPassword" method="post">
+            <!-- Trường nhập email - phải được đăng ký trong database -->
             <div class="form-group">
                 <label for="email">Email Address:</label>
                 <input type="email" id="email" name="email" required 
@@ -122,6 +126,7 @@
             <button type="submit">Reset Password</button>
         </form>
         
+        <!-- Link quay về trang đăng nhập -->
         <div class="back-link">
             <a href="<%= request.getContextPath() %>/login">← Back to Login</a>
         </div>

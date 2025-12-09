@@ -102,30 +102,64 @@
 </head>
 <body>
     <div class="success-container">
+        <!-- Icon thành công -->
         <div class="icon">✅</div>
-        <h2>Password Reset Successful!</h2>
         
+        <!-- Tiêu đề động: Thay đổi dựa vào có attribute "success" hay không -->
+        <h2><%= request.getAttribute("success") != null ? "Email Sent!" : "Password Reset Link" %></h2>
+        
+        <!-- Thông tin email đã gửi -->
         <div class="info-box">
-            <p>A temporary password has been generated for:</p>
-            <p style="font-weight: bold; color: #333;"><%= request.getAttribute("email") %></p>
+            <% if(request.getAttribute("success") != null) { %>
+                <!-- Trường hợp email gửi thành công -->
+                <p><%= request.getAttribute("success") %></p>
+                <p style="font-weight: bold; color: #333;"><%= request.getAttribute("email") %></p>
+            <% } else { %>
+                <!-- Trường hợp email gửi thất bại (hiển thị link dự phòng) -->
+                <p>A password reset link has been created for:</p>
+                <p style="font-weight: bold; color: #333;"><%= request.getAttribute("email") %></p>
+            <% } %>
         </div>
         
+        <!-- Link dự phòng nếu email gửi thất bại -->
+        <% if(request.getAttribute("resetLink") != null) { %>
         <div class="temp-password">
-            <div class="temp-password-label">YOUR TEMPORARY PASSWORD:</div>
-            <div class="temp-password-value"><%= request.getAttribute("tempPassword") %></div>
+            <div class="temp-password-label">BACKUP LINK (Email failed to send):</div>
+            <div style="margin: 15px 0;">
+                <!-- Link reset trực tiếp cho trường hợp email không gửi được -->
+                <a href="<%= request.getAttribute("resetLink") %>" 
+                   style="color: #667eea; font-weight: bold; word-break: break-all;">
+                    <%= request.getAttribute("resetLink") %>
+                </a>
+            </div>
         </div>
+        <% } %>
         
+        <!-- Hướng dẫn và cảnh báo quan trọng -->
         <div class="warning">
             <strong>⚠️ Important Instructions:</strong>
             <ul>
-                <li>Please save this temporary password</li>
-                <li>Use it to login to your account</li>
-                <li>Change your password immediately after login for security</li>
-                <li>This password will not be sent via email in this demo</li>
+                <% if(request.getAttribute("success") != null) { %>
+                    <!-- Hướng dẫn khi email đã gửi thành công -->
+                    <li>Check your email inbox (and spam folder)</li>
+                    <li>Click the link in the email to reset your password</li>
+                <% } else { %>
+                    <!-- Hướng dẫn khi sử dụng link dự phòng -->
+                    <li>Click the link above to set your new password</li>
+                <% } %>
+                <li>The link will expire in 30 minutes</li> <!-- Cập nhật từ 15 thành 30 phút -->
+                <li>You will be able to choose your own password</li>
             </ul>
         </div>
         
-        <a href="<%= request.getContextPath() %>/login" class="login-btn">Go to Login</a>
+        <!-- Nút hành động: Reset ngay hoặc quay về login -->
+        <% if(request.getAttribute("resetLink") != null) { %>
+            <!-- Nếu có link dự phòng, cho phép reset ngay -->
+            <a href="<%= request.getAttribute("resetLink") %>" class="login-btn">Reset Password Now</a>
+        <% } else { %>
+            <!-- Nếu email đã gửi, chỉ cần quay về trang login -->
+            <a href="<%= request.getContextPath() %>/login" class="login-btn">Go to Login</a>
+        <% } %>
     </div>
 </body>
 </html>

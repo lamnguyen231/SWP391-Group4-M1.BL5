@@ -1,19 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.wmsmobile.model.User" %>
-<%
-    // Kiểm tra bảo mật: Xác minh người dùng đã đăng nhập
-    // Lấy thông tin user từ session với key "account" (không phải "user")
-    User user = (User) session.getAttribute("account");
-    if(user == null) {
-        // Chuyển hướng về trang login nếu chưa đăng nhập
-        response.sendRedirect(request.getContextPath() + "/login");
-        return;
-    }
-%>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Change Password - WMS Mobile</title>
+    <title>Reset Password - WMS Mobile</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
@@ -30,7 +19,7 @@
             justify-content: center;
             align-items: center;
         }
-        .change-password-container {
+        .reset-container {
             background: white;
             padding: 40px;
             border-radius: 10px;
@@ -41,7 +30,22 @@
         h2 {
             text-align: center;
             color: #333;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
             margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .email-info {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #555;
         }
         .form-group {
             margin-bottom: 20px;
@@ -75,7 +79,6 @@
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.2s;
-            margin-top: 10px;
         }
         button:hover {
             transform: translateY(-2px);
@@ -96,81 +99,67 @@
             margin-bottom: 20px;
             text-align: center;
         }
-        .back-link {
+        .icon {
             text-align: center;
-            margin-top: 20px;
-        }
-        .back-link a {
-            color: #667eea;
-            text-decoration: none;
-        }
-        .back-link a:hover {
-            text-decoration: underline;
-        }
-        .user-info {
-            text-align: center;
+            font-size: 48px;
             margin-bottom: 20px;
-            color: #666;
         }
-        .user-info strong {
-            color: #333;
+        .password-requirements {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="change-password-container">
-        <h2>Change Password</h2>
+    <div class="reset-container">
+        <div class="icon">🔑</div>
+        <h2>Reset Your Password</h2>
+        <p class="subtitle">Enter your new password</p>
         
-        <!-- Hiển thị thông tin người dùng hiện tại -->
-        <div class="user-info">
-            <strong><%= user.getName() %></strong><br>
-            <%= user.getEmail() %>
-        </div>
+        <!-- Hiển thị email đang reset mật khẩu -->
+        <% if(request.getAttribute("email") != null) { %>
+            <div class="email-info">
+                Resetting password for: <strong><%= request.getAttribute("email") %></strong>
+            </div>
+        <% } %>
         
-        <!-- Hiển thị thông báo lỗi (xác thực thất bại, mật khẩu hiện tại sai, v.v.) -->
+        <!-- Hiển thị thông báo lỗi (token hết hạn, mật khẩu không khớp, v.v.) -->
         <% if(request.getAttribute("error") != null) { %>
             <div class="error-message">
                 <%= request.getAttribute("error") %>
             </div>
         <% } %>
         
-        <!-- Hiển thị thông báo thành công (đổi mật khẩu thành công) -->
+        <!-- Hiển thị thông báo thành công -->
         <% if(request.getAttribute("success") != null) { %>
             <div class="success-message">
                 <%= request.getAttribute("success") %>
             </div>
         <% } %>
         
-        <!-- Form đổi mật khẩu - POST đến servlet /changePassword -->
-        <form action="<%= request.getContextPath() %>/changePassword" method="post">
-            <!-- Trường mật khẩu hiện tại - bắt buộc để xác minh bảo mật -->
-            <div class="form-group">
-                <label for="currentPassword">Current Password:</label>
-                <input type="password" id="currentPassword" name="currentPassword" required 
-                       placeholder="Enter current password">
-            </div>
+        <!-- Form reset mật khẩu - POST đến servlet /resetPassword -->
+        <form action="<%= request.getContextPath() %>/resetPassword" method="post">
+            <!-- Token ẩn trong hidden field - được lấy từ URL -->
+            <input type="hidden" name="token" value="<%= request.getAttribute("token") %>">
             
             <!-- Trường mật khẩu mới - tối thiểu 6 ký tự -->
             <div class="form-group">
                 <label for="newPassword">New Password:</label>
                 <input type="password" id="newPassword" name="newPassword" required 
-                       placeholder="Enter new password (min 6 characters)">
+                       placeholder="Enter new password" minlength="6">
+                <div class="password-requirements">Must be at least 6 characters</div>
             </div>
             
-            <!-- Trường xác nhận mật khẩu - phải khớp với mật khẩu mới -->
+            <!-- Xác nhận mật khẩu mới -->
             <div class="form-group">
-                <label for="confirmPassword">Confirm New Password:</label>
+                <label for="confirmPassword">Confirm Password:</label>
                 <input type="password" id="confirmPassword" name="confirmPassword" required 
-                       placeholder="Confirm new password">
+                       placeholder="Confirm new password" minlength="6">
             </div>
             
-            <button type="submit">Change Password</button>
+            <button type="submit">Reset Password</button>
         </form>
-        
-        <!-- Link quay về trang chủ -->
-        <div class="back-link">
-            <a href="<%= request.getContextPath() %>/">← Back to Home</a>
-        </div>
     </div>
 </body>
 </html>

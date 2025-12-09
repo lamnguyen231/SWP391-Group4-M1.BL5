@@ -77,6 +77,20 @@
             margin-bottom: 20px;
             text-align: center;
         }
+        .success-message {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            animation: fadeOut 2s forwards;
+            animation-delay: 2s;
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; display: none; }
+        }
         .links {
             margin-top: 20px;
             text-align: center;
@@ -94,6 +108,12 @@
 <body>
     <div class="login-container">
         <h2>Login</h2>
+        
+        <% if(request.getAttribute("success") != null) { %>
+            <div class="success-message" id="successMessage">
+                <%= request.getAttribute("success") %>
+            </div>
+        <% } %>
         
         <% if(request.getAttribute("error") != null) { %>
             <div class="error-message">
@@ -122,5 +142,19 @@
             <a href="<%= request.getContextPath() %>">Back To HomePage</a>
         </div>
     </div>
+    
+    <script>
+        // Auto hide success message after 2 seconds
+        const successMsg = document.getElementById('successMessage');
+        if (successMsg) {
+            setTimeout(() => {
+                successMsg.style.transition = 'opacity 0.5s';
+                successMsg.style.opacity = '0';
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 500);
+            }, 2000);
+        }
+    </script>
 </body>
 </html>
