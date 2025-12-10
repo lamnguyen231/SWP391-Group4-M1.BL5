@@ -24,7 +24,7 @@ public class ChangePasswordController extends HttpServlet {
     // Key để lưu user trong session
     private static final String SESSION_ACCOUNT_KEY = "account";
     // Đường dẫn đến JSP view
-    private static final String VIEW_PATH = "/views/auth/changePassword.jsp";
+    private static final String VIEW_PATH = "/views/auth/login.jsp";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
